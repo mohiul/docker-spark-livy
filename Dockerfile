@@ -73,7 +73,7 @@ CMD ["bin/spark-class", "org.apache.spark.deploy.master.Master"]
 ENV LIVY_VERSION 0.6.0-incubating
 ENV LIVY_HOME /usr/apache-livy-${LIVY_VERSION}-bin
 RUN curl -sL --retry 3 \
-  "https://www.apache.org/dyn/closer.lua/incubator/livy/0.6.0-incubating/apache-livy-${LIVY_VERSION}-bin.zip" \
+  "https://www.apache.org/dyn/closer.lua/incubator/livy/${LIVY_VERSION}/apache-livy-${LIVY_VERSION}-bin.zip" \
   | unzip apache-livy-${LIVY_VERSION}-bin.zip -d /usr/
 
 WORKDIR $LIVY_HOME
