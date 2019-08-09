@@ -65,9 +65,6 @@ RUN curl -sL --retry 3 \
   | gunzip \
   | tar x -C /usr/ \
  && mv /usr/mysql-connector-java-5.1.47/mysql-connector-java-5.1.47.jar $SPARK_HOME/jars/mysql-connector-java-5.1.47.jar
-  
-WORKDIR $SPARK_HOME
-CMD ["bin/spark-class", "org.apache.spark.deploy.master.Master"]
 
 # LIVY
 ENV LIVY_VERSION 0.6.0-incubating
@@ -76,5 +73,6 @@ RUN curl -sL --retry 3 \
   "http://mirror.dsrg.utoronto.ca/apache/incubator/livy/${LIVY_VERSION}/apache-livy-${LIVY_VERSION}-bin.zip" \
   | unzip apache-livy-${LIVY_VERSION}-bin.zip -d /usr/
 
-WORKDIR $LIVY_HOME
-CMD ["bin/livy-server", "start"]
+WORKDIR $SPARK_HOME
+CMD ["bin/spark-class", "org.apache.spark.deploy.master.Master"]
+
