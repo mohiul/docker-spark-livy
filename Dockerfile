@@ -71,9 +71,10 @@ ENV LIVY_VERSION 0.6.0-incubating
 ENV LIVY_HOME /usr/apache-livy-${LIVY_VERSION}-bin
 RUN curl -sL --retry 3 \
   "http://mirror.dsrg.utoronto.ca/apache/incubator/livy/${LIVY_VERSION}/apache-livy-${LIVY_VERSION}-bin.zip" \
-  | unzip apache-livy-${LIVY_VERSION}-bin.zip -d /usr/ \
+  | unzip -d /usr/ \
  && mv /usr/apache-livy-${LIVY_VERSION}-bin /usr/apache-livy-bin
+ && mv /usr/apache-livy-bin/livy.conf.template /usr/apache-livy-bin/livy.conf
+ && replace "# livy.spark.master = local" "livy.spark.master = spark://master:7077" -- /usr/apache-livy-bin/livy.conf
 
 WORKDIR $SPARK_HOME
 CMD ["bin/spark-class", "org.apache.spark.deploy.master.Master"]
-
