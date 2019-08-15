@@ -70,11 +70,13 @@ RUN curl -sL --retry 3 \
 ENV LIVY_VERSION 0.6.0-incubating
 ENV LIVY_HOME /usr/apache-livy-${LIVY_VERSION}-bin
 RUN curl -sL --retry 3 \
-  "http://mirror.dsrg.utoronto.ca/apache/incubator/livy/${LIVY_VERSION}/apache-livy-${LIVY_VERSION}-bin.zip" \
-  | unzip apache-livy-${LIVY_VERSION}-bin.zip -d /usr/ \
- && mv /usr/apache-livy-${LIVY_VERSION}-bin /usr/apache-livy-bin \
- && mv /usr/apache-livy-bin/livy.conf.template /usr/apache-livy-bin/livy.conf \
- && replace "# livy.spark.master = local" "livy.spark.master = spark://master:7077" -- /usr/apache-livy-bin/livy.conf
+  "http://apache.mirror.globo.tech/incubator/livy/0.6.0-incubating/apache-livy-${LIVY_VERSION}-bin.zip" --output apache-livy-${LIVY_VERSION}-bin.zip
+RUN unzip apache-livy-${LIVY_VERSION}-bin.zip
+RUN mv apache-livy-${LIVY_VERSION}-bin /usr/apache-livy-${LIVY_VERSION}-bin
+RUN mv /usr/apache-livy-${LIVY_VERSION}-bin/conf/livy.conf.template /usr/apache-livy-${LIVY_VERSION}-bin/conf/livy.conf
+ENV firstStr ".*livy\.spark\.master = local"
+ENV secondStr "livy\.spark\.master = spark:\/\/master:7077" 
+RUN sed -i "s/${firstStr}/${secondStr}/g" /usr/apache-livy-${LIVY_VERSION}-bin/conf/livy.conf
 
 WORKDIR $SPARK_HOME
 CMD ["bin/spark-class", "org.apache.spark.deploy.master.Master"]
