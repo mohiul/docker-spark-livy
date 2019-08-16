@@ -16,7 +16,7 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
 RUN apt-get update \
- && apt-get install -y curl unzip \
+ && apt-get install -y curl unzip procps \
     python3 python3-setuptools \
  && ln -s /usr/bin/python3 /usr/bin/python \
  && easy_install3 pip py4j \
@@ -76,6 +76,9 @@ RUN mv apache-livy-${LIVY_VERSION}-bin /usr/apache-livy-${LIVY_VERSION}-bin
 RUN mv /usr/apache-livy-${LIVY_VERSION}-bin/conf/livy.conf.template /usr/apache-livy-${LIVY_VERSION}-bin/conf/livy.conf
 ENV firstStr ".*livy\.spark\.master = local"
 ENV secondStr "livy\.spark\.master = spark:\/\/master:7077" 
+RUN sed -i "s/${firstStr}/${secondStr}/g" /usr/apache-livy-${LIVY_VERSION}-bin/conf/livy.conf
+ENV firstStr ".*livy\.server\.port = 8998"
+ENV secondStr "livy\.server\.port = 8090"
 RUN sed -i "s/${firstStr}/${secondStr}/g" /usr/apache-livy-${LIVY_VERSION}-bin/conf/livy.conf
 
 WORKDIR $SPARK_HOME
