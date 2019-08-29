@@ -1,7 +1,7 @@
-FROM ubuntu:eoan
+FROM debian:bullseye
 
 RUN apt-get update \
- && apt-get install -y locales --no-install-recommends apt-utils \
+ && apt-get install -y locales \
  && dpkg-reconfigure -f noninteractive locales \
  && locale-gen C.UTF-8 \
  && /usr/sbin/update-locale LANG=C.UTF-8 \
@@ -19,7 +19,7 @@ RUN apt-get update \
  && apt-get install -y curl unzip procps \
     python3 python3-setuptools r-base \
  && ln -s /usr/bin/python3 /usr/bin/python \
- && easy_install3 pip py4j \
+# && easy_install3 pip py4j \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
@@ -30,7 +30,7 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK 1
 
 # JAVA
 RUN apt-get update \
- && apt-get install -y openjdk-8-jre \
+ && apt-get install -y openjdk-11-jre \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
