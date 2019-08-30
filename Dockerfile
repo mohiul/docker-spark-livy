@@ -17,7 +17,7 @@ ENV LC_ALL en_US.UTF-8
 
 RUN apt-get update \
  && apt-get install -y curl unzip procps \
-    python3 python3-setuptools r-base \
+    python3 python3-setuptools r-base libcurl4-openssl-dev \
  && ln -s /usr/bin/python3 /usr/bin/python \
 # && easy_install3 pip py4j \
  && apt-get clean \
@@ -69,6 +69,9 @@ RUN mv apache-livy-${LIVY_VERSION}-bin /usr/apache-livy-${LIVY_VERSION}-bin
 #ENV firstStr ".*livy\.server\.port = 8998"
 #ENV secondStr "livy\.server\.port = 8090"
 #RUN sed -i "s/${firstStr}/${secondStr}/g" /usr/apache-livy-${LIVY_VERSION}-bin/conf/livy.conf
+
+# R forecast
+RUN R -e 'install.packages("forecast", dependencies = TRUE)'
 
 WORKDIR $SPARK_HOME
 CMD ["bin/spark-class", "org.apache.spark.deploy.master.Master"]
