@@ -1,4 +1,4 @@
-FROM debian:bullseye
+FROM debian:buster
 
 RUN apt-get update \
  && apt-get install -y locales \
@@ -29,8 +29,9 @@ ENV PYTHONIOENCODING UTF-8
 ENV PIP_DISABLE_PIP_VERSION_CHECK 1
 
 # JAVA
+RUN echo "deb http://ftp.us.debian.org/debian sid main" >> /etc/apt/sources.list
 RUN apt-get update \
- && apt-get install -y openjdk-11-jre \
+ && apt-get install -y openjdk-8-jre \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
