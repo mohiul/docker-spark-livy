@@ -63,13 +63,16 @@ RUN curl -sL --retry 3 \
   "http://apache.mirror.globo.tech/incubator/livy/0.6.0-incubating/apache-livy-${LIVY_VERSION}-bin.zip" --output apache-livy-${LIVY_VERSION}-bin.zip
 RUN unzip apache-livy-${LIVY_VERSION}-bin.zip
 RUN mv apache-livy-${LIVY_VERSION}-bin /usr/apache-livy-${LIVY_VERSION}-bin
-#RUN mv /usr/apache-livy-${LIVY_VERSION}-bin/conf/livy.conf.template /usr/apache-livy-${LIVY_VERSION}-bin/conf/livy.conf
+RUN mv /usr/apache-livy-${LIVY_VERSION}-bin/conf/livy.conf.template /usr/apache-livy-${LIVY_VERSION}-bin/conf/livy.conf
 #ENV firstStr ".*livy\.spark\.master = local"
 #ENV secondStr "livy\.spark\.master = spark:\/\/master:7077" 
 #RUN sed -i "s/${firstStr}/${secondStr}/g" /usr/apache-livy-${LIVY_VERSION}-bin/conf/livy.conf
 #ENV firstStr ".*livy\.server\.port = 8998"
 #ENV secondStr "livy\.server\.port = 8090"
 #RUN sed -i "s/${firstStr}/${secondStr}/g" /usr/apache-livy-${LIVY_VERSION}-bin/conf/livy.conf
+ENV firstStr ".*livy\.server\.session\.timeout-check = true"
+ENV secondStr "livy\.server\.session\.timeout-check = false"
+RUN sed -i "s/${firstStr}/${secondStr}/g" /usr/apache-livy-${LIVY_VERSION}-bin/conf/livy.conf
 
 # R forecast
 RUN R -e 'install.packages("forecast", dependencies = TRUE)'
